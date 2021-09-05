@@ -1,5 +1,6 @@
 package com.in28minutes.rest.webservices.restfulwebservices.user;
 
+import com.in28minutes.rest.webservices.restfulwebservices.exception.UserNotFoundException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -23,7 +24,11 @@ public class UserController {
 
     @GetMapping("/users/{id}")
     public User getUser(@PathVariable Integer id) {
-        return userService.findUser(id);
+        User user =  userService.findUser(id);
+        if(user == null) {
+            throw new UserNotFoundException("id-" + id);
+        }
+        return user;
     }
 
     @PostMapping("/users")
